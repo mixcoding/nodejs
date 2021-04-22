@@ -1,3 +1,10 @@
+/*
+ * @Author: 方小宇
+ * @Date: 2021-04-06 20:53:59
+ * @LastEditors: 方小宇
+ * @LastEditTime: 2021-04-21 14:20:39
+ * @Description: 大威天龙,宇哥出马,没有bug
+ */
 const { json } = require('body-parser')
 const express = require('express')
 const app = express()
@@ -7,6 +14,16 @@ const {User} = require('./models')
 const {data} = require('./get_excel')
 
 
+// 允许跨域访问
+app.all('*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+    res.header("X-Powered-By",' 3.2.1')
+    res.header("Content-Type", "application/json;charset=utf-8");
+    next();
+});
+
 app.use(express.json())
 
 const SECRET = '999887'
@@ -14,8 +31,13 @@ const SECRET = '999887'
 app.get('/api/users', async(req, res) => {
     const users =await User.find()
     res.send(users)
-}
-)
+})
+
+app.get('/api/getExcel', async(req, res) => {
+    res.send({
+        data
+    })
+})
 
 app.post('/api/register',async(req,res) =>{
     console.log(req.body)
@@ -64,7 +86,6 @@ const auth = async(req,res,next) => {
 }
 
 app.get('/api/profile',auth,async(req,res) => {
-    
     res.send(req.user)
 })
 

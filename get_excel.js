@@ -1,33 +1,28 @@
+/*
+ * @Author: 方小宇
+ * @Date: 2021-04-12 11:23:48
+ * @LastEditors: 方小宇
+ * @LastEditTime: 2021-04-21 14:23:44
+ * @Description: 大威天龙,宇哥出马,没有bug
+ */
 var xlsx = require('node-xlsx');
 var fs = require('fs');
-//读取文件内容
-var sheets = xlsx.parse(__dirname+'/issue/test.xlsx');
-var excelObj=sheets[0].data;
-// console.log('------',excelObj);
 
-var data;
-sheets.forEach(sheet => {
-    // 获取整个excel中的数据
-    const data = sheet['data']
-    // 将需要的列数据组装成数组
-    for(let rowId in data){
-        const row = data[rowId]
-        let obj ={};
-        for(let i in row){
-            obj.title = row[0]
-            obj.content = row[1]
-        }
-        data.push(obj)   
-    }
-})
+var excel = xlsx.parse(__dirname+'/issue/test.xlsx');
+var excelObj=excel[0].data;
 
-var buffer = xlsx.build([
-  {
-    name:'sheet1',
-    data:data
+
+var data = [];
+for(var i in excelObj){
+  var arr=[];
+  var value=excelObj[i];
+  for(var j in value){
+    console.log('22',value[j])
+    arr.push(value[j]);
   }
-]);
-// 将文件内容插入新的文件中
-// console.log();
-// fs.writeFileSync('test1.xlsx',buffer,{'flag':'w'});
+  data.push(arr);
+}
+
+
+
 module.exports = {data};

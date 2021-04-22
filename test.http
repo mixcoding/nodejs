@@ -5,6 +5,12 @@
 ### 所有用户  bcrypt加密
 get {{url}}/users
 
+### 获取excel表格数据
+
+get {{url}}/getExcel
+{{json}}
+
+
 ### 注册
 post {{url}}/register
 {{json}}
