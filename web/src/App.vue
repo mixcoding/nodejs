@@ -1,6 +1,12 @@
+<!--
+ * @Author: 方小宇
+ * @Date: 2021-04-21 15:12:46
+ * @LastEditors: 方小宇
+ * @LastEditTime: 2021-04-26 11:00:12
+ * @Description: 大威天龙,宇哥出马,没有bug
+-->
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
@@ -17,12 +23,8 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+html,body{
+  margin: 0;
+  padding: 0;
 }
 </style>
