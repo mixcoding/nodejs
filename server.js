@@ -2,7 +2,7 @@
  * @Author: 方小宇
  * @Date: 2021-04-06 20:53:59
  * @LastEditors: 方小宇
- * @LastEditTime: 2021-04-21 14:20:39
+ * @LastEditTime: 2021-04-26 17:14:24
  * @Description: 大威天龙,宇哥出马,没有bug
  */
 const { json } = require('body-parser')
@@ -28,6 +28,10 @@ app.use(express.json())
 
 const SECRET = '999887'
 
+app.get('/', async(req, res) => {
+    res.send('hello world')
+})
+
 app.get('/api/users', async(req, res) => {
     const users =await User.find()
     res.send(users)
@@ -46,6 +50,13 @@ app.post('/api/register',async(req,res) =>{
         password:req.body.password,
     })
     res.send(user)
+})
+
+app.post('/api/saveImg',async(req,res) =>{
+    console.log(req.body)
+    res.send({
+        ok
+    })
 })
 
 const jwt = require('jsonwebtoken')
