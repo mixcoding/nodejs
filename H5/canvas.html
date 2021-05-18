@@ -1,0 +1,182 @@
+<!--
+ * @Author: 方小宇
+ * @Date: 2021-05-11 10:11:06
+ * @LastEditors: 方小宇
+ * @LastEditTime: 2021-05-11 11:08:44
+ * @Description: 大威天龙,宇哥出马,没有bug
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>htmltopic</title>
+    <script type="text/javascript" src="jq.js"></script>
+    <script type="text/javascript" src="html2canvas.js"></script>
+    <style>
+        * {
+            margin: 0;
+        }
+ 
+ 
+        .test {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            line-height: 100px;
+            background-color: #87CEEB;
+            display: inline-block;
+            vertical-align: top;
+        }
+ 
+ 
+        canvas {
+            margin-right: 5px;
+        }
+ 
+ 
+        .down {
+            float: left;
+            margin: 40px 10px;
+        }
+        .down2 {
+            float: left;
+            margin: 40px 30px;
+        }
+        #hello {
+  background-image: url("bgc.png");
+  width: 400px;
+  height: 667px;
+  background-size: 100% 100%;
+  margin-bottom: 20px;
+  position: relative;
+}
+#title {
+  position: absolute;
+  left: 18%;
+  top: 280px;
+  color: #26969a;
+  font-size: 20px;
+}
+#content {
+  position: absolute;
+  font-size: 18px;
+  line-height: 29px;
+  top: 330px;
+  padding: 0 6px 0 58px;
+}
+h3 {
+  margin: 40px 0 0;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+a {
+  color: #42b983;
+}
+    </style>
+</head>
+<body>
+ 
+    <div id="hello" class='hello'>
+        <div id="title"></div>
+        <div id="content"></div>
+    </div>
+
+    <div><a class="down" href="" download="downImg">下载</a>
+    </div>
+    <div><a class="down2" href="" download="downImg">下载2</a></div>
+<script>
+    var mm =[]
+    function getData(){
+        $.ajax({
+        async : false,    
+        url : "http://localhost:3000/api/getExcel",
+        dataType : "json",
+        success: function (response) {
+            console.log(response)
+          response.data.forEach(item => {
+        let obj = {};
+        $('#title').text(item[0])
+        $('#content').text(item[1])
+        obj.title = item[0];
+        obj.content = item[1];
+        console.log(obj)
+        mm.push(obj);
+      });
+      console.log(mm);
+        
+        },
+        error:function (data) {
+            alert(data.result);
+        }
+    });
+
+
+    }
+    getData()
+    //直接选择要截图的dom，就能截图，但是因为canvas的原因，生成的图片模糊
+    //html2canvas(document.querySelector('div')).then(function(canvas) {
+    //    document.body.appendChild(canvas);
+    //});
+    //创建一个新的canvas
+    var canvas2 = document.createElement("canvas");
+    let _canvas = document.querySelector('.hello');
+    var w = parseInt(window.getComputedStyle(_canvas).width);
+    var h = parseInt(window.getComputedStyle(_canvas).height);
+    //将canvas画布放大若干倍，然后盛放在较小的容器内，就显得不模糊了
+    canvas2.width = w * 2;
+    canvas2.height = h * 2;
+    canvas2.style.width = w + "px";
+    canvas2.style.height = h + "px";
+    //可以按照自己的需求，对context的参数修改,translate指的是偏移量
+    //  var context = canvas.getContext("2d");
+    //  context.translate(0,0);
+    var context = canvas2.getContext("2d");
+    context.scale(2, 2);
+
+    var img = new Image();
+    //设置图片跨域访问
+    img.setAttribute('crossOrigin', 'anonymous');
+
+
+    html2canvas(document.querySelector("#hello"), { canvas: canvas2 }).then(function(canvas) {
+        //document.body.appendChild(canvas);
+        console.log(canvas)
+        //canvas转换成url，然后利用a标签的download属性，直接下载，绕过上传服务器再下载
+        // document.querySelector(".down").setAttribute('href', canvas.toDataURL());
+    });
+
+
+
+    
+</script>
+ 
+ 
+<script language="javascript">
+    //这是另一种写法
+    $(function () {
+        
+        $(".down2").click(function () {
+             //两个参数：所需要截图的元素id，截图后要执行的函数， canvas为截图后返回的最后一个canvas
+            html2canvas(document.getElementById('hello')).then(function(canvas) {
+                
+                console.log('----',canvas)
+                // var imgUri = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); 
+                // window.location.href = imgUri; 
+            
+            });
+    
+                
+         
+        }); 
+
+
+    });
+</script>
+</body>
+</html>

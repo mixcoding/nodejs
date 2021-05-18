@@ -1,0 +1,54 @@
+<!--
+ * @Author: 方小宇
+ * @Date: 2021-05-11 11:14:43
+ * @LastEditors: 方小宇
+ * @LastEditTime: 2021-05-11 11:23:51
+ * @Description: 大威天龙,宇哥出马,没有bug
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="jq.js"></script>
+  <script src="html2canvas.js"></script>
+  <title>图片下载</title>
+</head>
+<body>
+  <div>
+    <img src="./bgc.png" alt="图片1">222
+  </div>
+  <a class="down" href="" download="imgTest">图片下载</a>
+</body>
+</html>
+<script>
+//创建canvas元素 
+let canvas_dom = document.createElement('canvas');
+// 获取图片dom
+let imgs = document.querySelector('div');
+let w = parseInt(window.getComputedStyle(imgs).width);
+let h = parseInt(window.getComputedStyle(imgs).height);
+
+// 设置画布宽高
+canvas_dom.width = w;
+canvas_dom.height = h;
+canvas_dom.style.width = w + 'px';
+canvas_dom.style.height = h + 'px';
+
+var context = canvas_dom.getContext('2d');
+
+var img = new Image(),//创建新的图片对象
+      base64 = '' ;//base64 
+
+  img.setAttribute("crossOrigin",'Anonymous')
+  img.onload = function(){//图片加载完，再draw 和 toDataURL
+    context.drawImage(img,0,0);    
+       base64 = canvas_dom.toDataURL("image/png"); 
+   };
+context.scale(2,2);
+html2canvas(document.querySelector('div'), { canvas: canvas_dom }).then(function(canvas) {
+  //利用a标签的download属性，直接下载
+  document.querySelector(".down").setAttribute('href', canvas.toDataURL());
+});
+</script>
